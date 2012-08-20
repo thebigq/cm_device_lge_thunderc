@@ -13,8 +13,6 @@
 # limitations under the License.
 
 
-ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),thunderc)
-
 LOCAL_PATH:= $(call my-dir)
 # HAL module implemenation, not prelinked and stored in
 # hw/<COPYPIX_HARDWARE_MODULE_ID>.<ro.board.platform>.so
@@ -31,5 +29,3 @@ LOCAL_SHARED_LIBRARIES := liblog
 LOCAL_MODULE := lights.$(TARGET_BOOTLOADER_BOARD_NAME)
 
 include $(BUILD_SHARED_LIBRARY)
-
-endif
