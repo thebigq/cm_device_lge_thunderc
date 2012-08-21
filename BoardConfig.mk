@@ -1,3 +1,5 @@
+include vendor/lge/thunderc/BoardConfigVendor.mk
+
 # Camera
 USE_CAMERA_STUB := false
 # http://r.cyanogenmod.com/#/c/13317/
@@ -28,13 +30,20 @@ TARGET_ARCH_VARIANT := armv6-vfp
 TARGET_ARCH := arm
 TARGET_PROVIDES_INIT_TARGET_RC := true
 
+# Kernel
+TARGET_KERNEL_SOURCE := kernel/lge/msm
+TARGET_KERNEL_CONFIG := thunderc_defconfig
+BOARD_KERNEL_CMDLINE := mem=471M console=ttyMSM2,115200n8 androidboot.hardware=thunderc
+BOARD_KERNEL_BASE := 0x12200000
+BOARD_KERNEL_PAGESIZE := 2048
+
 # Boot loader
 TARGET_NO_BOOTLOADER := true
 TARGET_BOOTLOADER_BOARD_NAME := thunderc
 
 BOARD_FLASH_BLOCK_SIZE := 131072
 
-TARGET_SPECIFIC_HEADER_PATH := device/lge/thunderc-common/include
+TARGET_SPECIFIC_HEADER_PATH := device/lge/thunderc/include
 
 # QCOM Hardware
 BOARD_USES_QCOM_HARDWARE := true
@@ -51,7 +60,7 @@ TARGET_USES_GENLOCK := true
 TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true 
 BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
-BOARD_EGL_CFG := device/lge/thunderc-common/prebuilt/etc/egl.cfg
+BOARD_EGL_CFG := device/lge/thunderc/prebuilt/etc/egl.cfg
 
 # http://www.slideshare.net/jserv/design-and-concepts-of-android-graphics
 COMMON_GLOBAL_CFLAGS += -DTARGET_MSM7x27 -DQCOM_HARDWARE
@@ -61,7 +70,7 @@ COMMON_GLOBAL_CFLAGS += -DMISSING_GRALLOC_BUFFERS -DREFRESH_RATE=60
 BOARD_USE_SKIA_LCDTEXT := true
 
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_CUSTOM_GRAPHICS := ../../../device/lge/thunderc-common/recovery/graphics.c 
+BOARD_CUSTOM_GRAPHICS := ../../../device/lge/thunderc/recovery/graphics.c 
 
 # Audio & Bluetooth
 TARGET_PROVIDES_LIBAUDIO := true
@@ -91,7 +100,7 @@ ENABLE_JSC_JIT := true
 
 # Mass Storage for ICS
 BOARD_USE_USB_MASS_STORAGE_SWITCH := true
-BOARD_CUSTOM_USB_CONTROLLER := ../../device/lge/thunderc-common/prebuilt/UsbController.cpp
+BOARD_CUSTOM_USB_CONTROLLER := ../../device/lge/thunderc/prebuilt/UsbController.cpp
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/usb_mass_storage/lun0/file
 #TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun/file
 BOARD_UMS_LUNFILE := /sys/devices/platform/msm_hsusb/gadget/lun0/file
@@ -103,16 +112,16 @@ BOARD_SDEXT_DEVICE := /dev/block/vold/179:2
 BOARD_USE_LEGACY_TOUCHSCREEN := true
 
 # Wi-Fi & Wi-Fi HotSpot
-BOARD_WLAN_DEVICE               := bcm4325
-WIFI_DRIVER_FW_STA_PATH         := "/system/etc/wl/rtecdc.bin"
-WIFI_DRIVER_FW_AP_PATH          := "/system/etc/wl/rtecdc-apsta.bin"
-WIFI_DRIVER_MODULE_NAME         := "wireless"
-WIFI_DRIVER_MODULE_PATH         := "/system/lib/modules/wireless.ko"
-WIFI_DRIVER_MODULE_ARG          := "firmware_path=/etc/wl/rtecdc.bin nvram_path=/etc/wl/nvram.txt config_path=/data/misc/wifi/config"
-WPA_SUPPLICANT_VERSION          := VER_0_6_X
-WIFI_DRIVER_HAS_LGE_SOFTAP      := true
-BOARD_WEXT_NO_COMBO_SCAN        := true
-BOARD_WPA_SUPPLICANT_DRIVER     := WEXT
+BOARD_WLAN_DEVICE		:= bcm4325
+WIFI_DRIVER_FW_STA_PATH		:= "/system/etc/wl/rtecdc.bin"
+WIFI_DRIVER_FW_AP_PATH		:= "/system/etc/wl/rtecdc-apsta.bin"
+WIFI_DRIVER_MODULE_NAME		:= "wireless"
+WIFI_DRIVER_MODULE_PATH		:= "/system/lib/modules/wireless.ko"
+WIFI_DRIVER_MODULE_ARG		:= "firmware_path=/etc/wl/rtecdc.bin nvram_path=/etc/wl/nvram.txt config_path=/data/misc/wifi/config"
+WPA_SUPPLICANT_VERSION		:= VER_0_6_X
+WIFI_DRIVER_HAS_LGE_SOFTAP	:= true
+BOARD_WEXT_NO_COMBO_SCAN	:= true
+BOARD_WPA_SUPPLICANT_DRIVER	:= WEXT
 
 TARGET_NO_RADIOIMAGE := true
 #TARGET_NO_RECOVERY := true
@@ -123,7 +132,7 @@ TARGET_NO_RADIOIMAGE := true
 #BOARD_USE_FROYO_LIBCAMERA := true
 
 
-BOARD_CUSTOM_BRCM_PATCHRAM_PLUS := ../../../device/lge/thunderc-common/prebuilt/brcm_patchram_plus.c
+BOARD_CUSTOM_BRCM_PATCHRAM_PLUS := ../../../device/lge/thunderc/prebuilt/brcm_patchram_plus.c
 
 
 #ICS settings
@@ -139,4 +148,8 @@ BOARD_GLOBAL_CFLAGS += -DBOARD_CHARGING_CMDLINE_NAME='"lge.reboot"' -DBOARD_CHAR
 #BOARD_CHARGING_CMDLINE_VALUE := "pwroff" 
 BOARD_USES_RECOVERY_CHARGEMODE := false 
 
-
+# Stock/standard recovery identifies as "thunderc" on all devices
+# Other recoveries may identify as specific devices
+# IHO sources by default identify as thunderc_XXXXX (and older versions
+#   of COT used this), but that's going too far into the weeds
+TARGET_OTA_ASSERT_DEVICE := thunderc,LS670,VM670,VS660
